@@ -28,6 +28,8 @@ class Settings:
     REDIS_HOST = environ.get("REDIS_HOST", "localhost")
     REDIS_PORT = environ.get("REDIS_PORT", "6379")
     PAGE_SIZE = 50
-
+    GH_APP_ID = environ.get("GH_APP_ID")
+    GH_SECRET = environ.get("GH_SECRET")
+    GH_PRIVATE_KEY = environ.get("GH_PRIVATE_KEY")
 
 settings = Settings()

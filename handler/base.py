@@ -4,7 +4,7 @@ from uuid import uuid4
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy import Column, MetaData
 from sqlalchemy.ext.declarative import as_declarative, declared_attr
-from .db import metadata
+from db import metadata
 
 
 @as_declarative()

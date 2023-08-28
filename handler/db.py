@@ -2,29 +2,38 @@ import logging
 
 import sqlalchemy
 from databases import Database
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy_utils import database_exists, create_database
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
-from .settings import settings
+from app.settings import settings
 
 
-db = Database(settings.DB_URL)
-metadata = sqlalchemy.MetaData()
-engine = sqlalchemy.create_engine(settings.DB_URL, pool_size=3, max_overflow=0)
-if not database_exists(engine.url):
-    create_database(engine.url)
+# db = Database(settings.DB_URL)
+# metadata = sqlalchemy.MetaData()
+# engine = sqlalchemy.create_engine(settings.DB_URL, pool_size=3, max_overflow=0)
+# create_database(engine.url)
 
-LocalSession = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+# LocalSession = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-metadata.create_all(engine)
+# metadata.create_all(engine)
+# Base = declarative_base()
 
+
+engine = create_engine(
+    settings.DB_URL
+)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+Base = declarative_base()
 
 def get_db():
     """
     A dependency for working with PostgreSQL
     """
     try:
-        db = LocalSession()
+        db = SessionLocal()
         yield db
     except Exception as e:
         logging.error(e)

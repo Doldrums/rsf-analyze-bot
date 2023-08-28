@@ -4,10 +4,11 @@ services:
   handler:
     build: .
     command: python main.py
+    working_dir: /usr/src/handler/
     volumes:
-      - ./:/usr/src/handler/
+      - ./handler/:/usr/src/handler/
     ports:
-      - 11000:11000
+      - 11002:11002
     env_file:
       - ./.env
     depends_on:
@@ -15,10 +16,11 @@ services:
   reporter:
     build: .
     command: python main.py
+    working_dir: /usr/src/reporter/
     volumes:
-      - ./:/usr/src/reporter/
+      - ./reporter/:/usr/src/reporter/
     ports:
-      - 11000:11000
+      - 11006:11006
     env_file:
       - ./.env
     depends_on:
@@ -27,21 +29,32 @@ services:
   analyser:
     build: .
     command: python main.py
+    working_dir: /usr/src/analyser/
     volumes:
-      - ./:/usr/src/analyser/
+      - ./analyser/:/usr/src/analyser/
     ports:
-      - 11000:11000
+      - 11001:11001
     env_file:
       - ./.env
     depends_on:
       - postgres
       - redis
   postgres:
-    image: postgres
+    image: postgres:latest
     ports:
       - 5432:5432
     env_file:
       - ./.env
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+        PGADMIN_DEFAULT_EMAIL: admin@pgadmin.com
+        PGADMIN_DEFAULT_PASSWORD: password
+        PGADMIN_LISTEN_PORT: 80
+    ports:
+        - 15432:80
+    depends_on:
+        - postgres
   redis:
     image: redis:alpine
     ports:

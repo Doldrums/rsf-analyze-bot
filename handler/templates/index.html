@@ -1,0 +1,86 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RSF Code Analyzer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background: #100e14;
+        color: white;
+      }
+      #img {
+        min-height: 300px;
+        flex-grow: 1;
+        width: 100vw;
+        background: url("https://images.unsplash.com/photo-1677080956305-ed8cb0ac05b7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3132&q=80");
+        background-size: cover;
+      }
+      main {
+        font-family: "Poppins", sans-serif;
+        max-width: 720px;
+        margin: auto;
+        padding: 10vmin 0 0 0;
+      }
+      h1 {
+        font-weight: 500;
+      }
+      p {
+        font-weight: 300;
+      }
+      #btns {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 10vmin;
+        justify-content: space-between;
+      }
+      a {
+        color: white;
+        text-decoration: none;
+        position: relative;
+      }
+      a::after {
+        content: "";
+        display: block;
+        position: absolute;
+        left: 0;
+        bottom: -1px;
+        height: 2px;
+        background: white;
+        width: 0;
+        transition: width 500ms ease;
+      }
+      a:hover::after {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>RSF Code Analyzer</h1>
+      <p>
+        Get a set of services that are in charge of helping developers or teams
+        in the process of identifying anomilies within their software
+        development process, and providing a list of preventive or corrective
+        actions (aka CAPAS) that positively impact the process. and in this way
+        to improve the quality of the final product and its development process.
+      </p>
+      <div id="btns">
+        <a href="github_link"> OAuthorize GitHub </a>
+        <a href="gitlab_link"> OAuthorize GitLab </a>
+        <a href="bitbucket_link"> OAuthorize BitBucket </a>
+      </div>
+    </main>
+    <div id="img"></div>
+  </body>
+</html>

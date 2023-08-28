@@ -15,12 +15,7 @@ RUN apt-get update \
     && apt-get -y install netcat
 
 COPY . .
-# install pipenv and project dependencies
-RUN pip install pipenv
-RUN pip install PyGithub
-RUN pip install aiohttp
-RUN pip install gidgethub
-RUN pip install PyJWT
-RUN pip install cryptography
-RUN pip install cachetools
+# install project dependencies
+RUN pip install -r requirements.txt
+
 RUN pipenv install --system --deploy --ignore-pipfile
