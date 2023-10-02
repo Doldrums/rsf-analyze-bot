@@ -19,6 +19,7 @@ bcrypt==4.0.1
 pytoml==0.1.21
 redis==4.5.4
 sqlalchemy==1.4.45
+numpy==1.24.3
 
 # testing
 pytest==7.3.0

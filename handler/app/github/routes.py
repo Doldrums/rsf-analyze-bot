@@ -71,20 +71,20 @@ async def repo_installation_added(event, gh, *args, **kwargs):
                 data={
                     'title': 'RSF Code Analyzer Report',
                     'body': '''
-    **Welcome to RSF Code Analyzer! 🚀**
+**Welcome to RSF Code Analyzer! 🚀**
 
-    Thank you for choosing RSF Code Analyzer and joining us on a journey towards better code quality and smoother development processes. 🙌
+Thank you for choosing RSF Code Analyzer and joining us on a journey towards better code quality and smoother development processes. 🙌
 
-    Who are we? We are a team dedicated to enhancing your software development experience. RSF Code Analyzer, short for "Repository Software Feedback Code Analyzer," is here to support you in identifying areas of improvement within your codebase. Our mission is to make your coding journey more efficient and your final product top-notch. 🛠️📊
+Who are we? We are a team dedicated to enhancing your software development experience. RSF Code Analyzer, short for "Repository Software Feedback Code Analyzer," is here to support you in identifying areas of improvement within your codebase. Our mission is to make your coding journey more efficient and your final product top-notch. 🛠️📊
 
-    Exciting news! The analysis of your repository has already commenced. Our diligent bot is hard at work gathering valuable insights and metrics to provide you with actionable suggestions for refining your codebase. ✨🔍
+Exciting news! The analysis of your repository has already commenced. Our diligent bot is hard at work gathering valuable insights and metrics to provide you with actionable suggestions for refining your codebase. ✨🔍
 
-    In the coming days, you can expect to see a range of suggestions aimed at boosting the quality of your code and streamlining your development process. We're all about continuous improvement and making your work as seamless as possible. 🌟🔧
+In the coming days, you can expect to see a range of suggestions aimed at boosting the quality of your code and streamlining your development process. We're all about continuous improvement and making your work as seamless as possible. 🌟🔧
 
-    Thank you once again for choosing RSF Code Analyzer. Your commitment to code excellence is truly commendable, and we're here to support you every step of the way. Stay tuned for updates and keep coding brilliantly! 💻🌈
+Thank you once again for choosing RSF Code Analyzer. Your commitment to code excellence is truly commendable, and we're here to support you every step of the way. Stay tuned for updates and keep coding brilliantly! 💻🌈
 
-    Best regards,
-    The RSF Code Analyzer Team
+Best regards,
+The RSF Code Analyzer Team
                     '''
                 },
                 oauth_token=installation_access_token["token"]
@@ -92,18 +92,22 @@ async def repo_installation_added(event, gh, *args, **kwargs):
             print(response)
         except:
             print("gidgethub.BadRequest: Issues are disabled for this repo")
+            continue
 
         db_repo = Repo(
-                    username="test-user",
-                    repo_url=response['repository_url'],
-                    issue_id=response['url'],
-                    data=json.dumps(response),
-            )
+            username="test-user",
+            repo_url=response['repository_url'],
+            issue_id=response['url'],
+            installation_token = installation_access_token["token"],
+            data=json.dumps(response),
+        )
+
         for db in get_db():
             db.add(db_repo)
             db.commit()
+            db.refresh(db_repo)
 
-        redis.publish(REDIS_ML_CHNNEL, response['repository_url'])
+        redis.publish(REDIS_ML_CHNNEL, db_repo.id)
 
     return web.Response(status=200)
 

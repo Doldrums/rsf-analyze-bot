@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   handler:
@@ -13,19 +13,19 @@ services:
       - ./.env
     depends_on:
       - redis
-  reporter:
-    build: .
-    command: python main.py
-    working_dir: /usr/src/reporter/
-    volumes:
-      - ./reporter/:/usr/src/reporter/
-    ports:
-      - 11006:11006
-    env_file:
-      - ./.env
-    depends_on:
-      - postgres
-      - redis
+  # reporter:
+  #   build: .
+  #   command: python main.py
+  #   working_dir: /usr/src/reporter/
+  #   volumes:
+  #     - ./reporter/:/usr/src/reporter/
+  #   ports:
+  #     - 11006:11006
+  #   env_file:
+  #     - ./.env
+  #   depends_on:
+  #     - postgres
+  #     - redis
   analyser:
     build: .
     command: python main.py
@@ -48,13 +48,13 @@ services:
   pgadmin:
     image: dpage/pgadmin4:latest
     environment:
-        PGADMIN_DEFAULT_EMAIL: admin@pgadmin.com
-        PGADMIN_DEFAULT_PASSWORD: password
-        PGADMIN_LISTEN_PORT: 80
+      PGADMIN_DEFAULT_EMAIL: admin@pgadmin.com
+      PGADMIN_DEFAULT_PASSWORD: password
+      PGADMIN_LISTEN_PORT: 80
     ports:
-        - 15432:80
+      - 15432:80
     depends_on:
-        - postgres
+      - postgres
   redis:
     image: redis:alpine
     ports:
