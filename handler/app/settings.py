@@ -1,8 +1,5 @@
 from os import environ
 
-from passlib.context import CryptContext
-
-
 class Settings:
     APP_TITLE = "App name"
     ALLOWED_HOST = environ.get("ALLOWED_HOST")
@@ -23,7 +20,6 @@ class Settings:
     )
     ACCESS_TOKEN_EXPIRY_TIME = 60 * 30
     REFRESH_TOKEN_EXPIRY_TIME = 60 * 24 * 365
-    PASSWORD_HASHER = CryptContext(schemes=["bcrypt"], deprecated="auto")
     JWT_ALGORITHM = "HS256"
     REDIS_HOST = environ.get("REDIS_HOST", "localhost")
     REDIS_PORT = environ.get("REDIS_PORT", "6379")

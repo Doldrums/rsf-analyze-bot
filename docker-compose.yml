@@ -7,6 +7,7 @@ services:
     working_dir: /usr/src/handler/
     volumes:
       - ./handler/:/usr/src/handler/
+      - reports-volume:/usr/src/handler/reports
     ports:
       - 11002:11002
     env_file:
@@ -32,6 +33,7 @@ services:
     working_dir: /usr/src/analyser/
     volumes:
       - ./analyser/:/usr/src/analyser/
+      - reports-volume:/usr/src/analyser/reports  
     ports:
       - 11001:11001
     env_file:
@@ -61,3 +63,6 @@ services:
       - 6379:6379
     env_file:
       - ./.env
+
+volumes:
+  reports-volume: 
