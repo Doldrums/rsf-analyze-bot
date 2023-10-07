@@ -103,7 +103,7 @@ if __name__ == "__main__":
                 if repo.data == None: 
                     parts = repo.repo_url.split('/')
                     with open(f'/usr/src/analyser/reports/{parts[-2]}-{parts[-1]}.html', 'w', encoding='utf-8') as f:
-                        html = markdown.markdown(issue_text).replace('\n', '<br/>').replace('</h1><br/>', '</h1>').replace('</h2><br/>', '</h2>')
+                        html = markdown.markdown(issue_text).replace('\n', '<br/>').replace('</h1><br/>', '</h1>').replace('</h2><br/>', '</h2>').replace('</p><br/>', '</p>')
                         html = f'''
                         <!DOCTYPE html>
                         <html>
