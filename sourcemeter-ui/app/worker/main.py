@@ -13,7 +13,6 @@ docker_client = docker.from_env()
 if __name__ == "__main__":
     print("Worker started")
     for msg in consumer:
-        consumer.commit()
         task_id = int(msg.value.decode())
         print(f"New task {task_id}")
         for db in get_db():

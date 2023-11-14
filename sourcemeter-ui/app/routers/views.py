@@ -42,9 +42,9 @@ def index_template(request: Request, db: Session = Depends(get_db)):
             report_link=f'/reports/{task.id}'
         )
 
-    tasks = map(map_task, get_tasks(db))
+    tasks = [map_task(task) for task in get_tasks(db)]
 
-    return templates.TemplateResponse("tasks.html", {"request": request, "tasks": tasks})
+    return templates.TemplateResponse("tasks.html.j2", {"request": request, "tasks": tasks})
 
 
 @router.get('/reports/{id}')

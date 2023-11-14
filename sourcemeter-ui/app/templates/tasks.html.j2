@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link rel="stylesheet" href="https://unpkg.com/papercss@1.9.2/dist/paper.min.css" />
+  <title>Sourcemeter-UI</title>
+</head>
+
+<body>
+  <div class="paper container">
+    <div style="
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+        ">
+      <h1>Tasks list</h1>
+      <a href="/downloads/all" class="paper-btn btn-success-outline">
+        Download all
+      </a>
+    </div>
+
+    <div style="
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: 1rem;
+          justify-content: space-between;
+        ">
+      <div class="form-group" style="flex-grow: 1">
+        <label for="paperInputs2">Add new</label>
+        <input class="input-block" type="text" id="repo_url" placeholder="https://github.com/redis/redis-py" />
+      </div>
+      <button onclick="submit()" class="paper-btn btn-primary-outline">
+        Submit
+      </button>
+
+      <script>
+        const repoUrlField = document.getElementById("repo_url");
+        function submit() {
+          fetch("/api/tasks", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ repo_url: repoUrlField.value }),
+          });
+          document.location.reload();
+        }
+      </script>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Repository</th>
+          <th>Status</th>
+          <th>Report</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="4">
+            {% set totalCount = tasks | list | count %}
+            {% set warningCount = tasks | selectattr("status", "equalto", "warning") | list | count %}
+            {% set secondaryCount = tasks | selectattr("status", "equalto", "secondary") | list | count %}
+            {% set successCount = tasks | selectattr("status", "equalto", "success") | list | count %}
+            {% set dangerCount = tasks | selectattr("status", "equalto", "danger") | list | count %}
+            <div id="status-progress" class="progress margin-bottom" style="display: flex">
+              {% if warningCount != 0 %}
+              <div class="bar striped warning" style="width: {{ warningCount / totalCount * 100 }}%;">
+                {{ warningCount }}
+              </div>
+              {% endif %}
+              {% if secondaryCount != 0 %}
+              <div class="bar striped secondary" style="width: {{ secondaryCount / totalCount * 100 }}%;">
+                {{ secondaryCount }}
+              </div>
+              {% endif %}
+              {% if successCount != 0 %}
+              <div class="bar striped success" style="width: {{ successCount / totalCount * 100 }}%;">
+                {{ successCount }}
+              </div>
+              {% endif %}
+              {% if dangerCount != 0 %}
+              <div class="bar striped danger " style="width: {{ dangerCount / totalCount * 100 }}%;">
+                {{ dangerCount }}
+              </div>
+              {% endif %}
+            </div>
+          </td>
+          <style>
+            #status-progress div:last-child {
+              border: none;
+            }
+          </style>
+        </tr>
+        {% for task in tasks %}
+        <tr>
+          <td>{{ task.id }}</td>
+          <td><a href="{{ task.repo_url }}">{{ task.repo_url }}</a></td>
+          <td>
+            <span class="badge {{ task.status }}">
+              {{ task.status_text }}
+            </span>
+          </td>
+          <td>
+            {% if task.status == "success" %}
+            <a href="{{ task.report_link }}">Link</a>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
+
+</html>
