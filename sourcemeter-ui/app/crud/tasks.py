@@ -6,7 +6,7 @@ from ..schemas.task import TaskCreate, Task as TaskScheme, TaskStatus
 
 
 def get_tasks(db: Session) -> List[TaskScheme]:
-    return db.query(Task).all()
+    return db.query(Task).order_by(Task.id).all()
 
 
 def get_task(db: Session, id: int) -> TaskScheme:
