@@ -9,6 +9,14 @@ def get_tasks(db: Session) -> List[TaskScheme]:
     return db.query(Task).order_by(Task.id).all()
 
 
+def get_failed_tasks(db: Session) -> List[TaskScheme]:
+    return db.query(Task).filter_by(status=TaskStatus.failure).order_by(Task.id).all()
+
+
+def get_non_success_tasks(db: Session) -> List[TaskScheme]:
+    return db.query(Task).filter(Task.status != TaskStatus.success).order_by(Task.id).all()
+
+
 def get_task(db: Session, id: int) -> TaskScheme:
     return db.get(Task, id)
 

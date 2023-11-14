@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-git clone $@
+git clone --depth 1 $@
 projectName=$(basename "$@" .git) 
 if [[ ! -e $projectName/__init__.py ]]; then
     touch $projectName/__init__.py

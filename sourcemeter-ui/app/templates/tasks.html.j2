@@ -52,7 +52,41 @@
         }
       </script>
     </div>
-
+    <div style="
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 1rem;
+              ">
+      <h4 style="margin: 1rem 0;">Queue controls</h4>
+      <div style="flex-grow: 1;"></div>
+      <button onclick="restartNonSuccess()" class="btn-small btn-success-outline">
+        Restart non-success
+      </button>
+      <button onclick="restartFailed()" class="btn-small btn-danger-outline">
+        Restart failed
+      </button>
+      <script>
+        function restartFailed() {
+          fetch("/api/tasks/restart/failed", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          document.location.reload();
+        }
+        function restartNonSuccess() {
+          fetch("/api/tasks/restart/non-success", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          document.location.reload();
+        }
+      </script>
+    </div>
     <table>
       <thead>
         <tr>
@@ -72,22 +106,23 @@
             {% set dangerCount = tasks | selectattr("status", "equalto", "danger") | list | count %}
             <div id="status-progress" class="progress margin-bottom" style="display: flex">
               {% if warningCount != 0 %}
-              <div class="bar striped warning" style="width: {{ warningCount / totalCount * 100 }}%;">
+              <div class="bar striped warning" style="width: {{ warningCount / totalCount * 100 }}%; min-width: 30px;">
                 {{ warningCount }}
               </div>
               {% endif %}
               {% if secondaryCount != 0 %}
-              <div class="bar striped secondary" style="width: {{ secondaryCount / totalCount * 100 }}%;">
+              <div class="bar striped secondary"
+                style="width: {{ secondaryCount / totalCount * 100 }}%; min-width: 30px;">
                 {{ secondaryCount }}
               </div>
               {% endif %}
               {% if successCount != 0 %}
-              <div class="bar striped success" style="width: {{ successCount / totalCount * 100 }}%;">
+              <div class="bar striped success" style="width: {{ successCount / totalCount * 100 }}%; min-width: 30px;">
                 {{ successCount }}
               </div>
               {% endif %}
               {% if dangerCount != 0 %}
-              <div class="bar striped danger " style="width: {{ dangerCount / totalCount * 100 }}%;">
+              <div class="bar striped danger " style="width: {{ dangerCount / totalCount * 100 }}%; min-width: 30px;">
                 {{ dangerCount }}
               </div>
               {% endif %}
