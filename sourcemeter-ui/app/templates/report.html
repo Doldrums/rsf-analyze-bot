@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/papercss@1.9.2/dist/paper.min.css"
+    />
+    <title>Report #{{ report.id }}</title>
+  </head>
+  <body>
+    <div class="paper container">
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+        "
+      >
+        <h1>Report #{{ report.id }}</h1>
+        <a
+          href="{{ report.download_link }}"
+          class="paper-btn btn-success-outline"
+        >
+          Download all
+        </a>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Link</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for link in report.links %}
+          <tr>
+            <td>{{loop.index}}</td>
+            <td>
+              <a href="{{ link.url }}">{{ link.text }}</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

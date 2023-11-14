@@ -1,0 +1,57 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    command: uvicorn app.main:app --host 0.0.0.0 --port 11002
+    volumes:
+      - reports:/usr/src/app/reports
+    ports:
+      - 11002:11002
+    env_file:
+      - ./.env
+    depends_on:
+      - kafka
+      - postgres
+  worker:
+    build: .
+    privileged: true
+    command: python -m app.worker.main
+    deploy:
+      mode: replicated
+      replicas: 10
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - reports:/usr/src/app/reports
+    env_file:
+      - ./.env
+    depends_on:
+      - kafka
+      - postgres
+  postgres:
+    image: postgres:latest
+    ports:
+      - 5433:5432
+    env_file:
+      - ./.env
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CREATE_TOPICS: "tasks:10:1"
+    depends_on:
+      - zookeeper
+volumes:
+  reports:
+  # driver: local
+  # driver_opts:
+  #   type: none
+  #   o: bind
+  #   device: ./reports

@@ -1,5 +1,5 @@
 # pull official base image
-FROM python:3.9-slim-bullseye
+FROM --platform=linux/x86_64 python:3.9-slim-bullseye
 
 # set work directory
 WORKDIR /usr/sourcemeter
